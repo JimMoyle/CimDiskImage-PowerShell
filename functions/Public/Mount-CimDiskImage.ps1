@@ -1,6 +1,42 @@
 function Mount-CimDiskImage {
     [CmdletBinding()]
 
+    <#
+        .SYNOPSIS
+        Mounts a cimfs disk image to your system.
+
+        .DESCRIPTION
+        This will mount a cim file to a directory of your choosing allowing you to browse the contents, mounting to a drive letter is not supported.  Remember to use the -Passthru Parameter to get output
+
+        .PARAMETER ImagePath
+        Specifies the location of the cim file to be mounted.
+        
+        .PARAMETER MountPath
+        Specifies the local folder to which the cim file will be mounted.  This folder needs to exist prior to attempting to mount a cim file to it.
+
+        .PARAMETER PassThru
+        Will output details of the mount operation to the pipeline.  Otherwise there will be no output
+
+        .INPUTS
+        This function will take inputs via pipeline by type and property and by position.
+
+        .OUTPUTS
+        PSCustomObject containing 'DeviceId', 'FileSystem', 'Path' and 'Guid'
+
+        .EXAMPLE
+        PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
+
+        .EXAMPLE
+        PS> Mount-CimDiskImage C:\MyCimFile.cim c:\MyMountPath
+
+        .EXAMPLE
+        PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
+
+        .EXAMPLE
+        PS> C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath
+
+    #>
+
     Param (
         [Parameter(
             Position = 0,

@@ -1,6 +1,36 @@
 function Get-CimDiskImage {
     [CmdletBinding(DefaultParameterSetName = 'DeviceId')]
 
+    <#
+        .SYNOPSIS
+        Gets information about a mounted cimfs disk image on your system.
+
+        .DESCRIPTION
+        When the volume DeviceId or Mount Point is supplied information about that disk will be returned, if no parameters are supplied all cimfs disks will be returned.
+
+        .PARAMETER DeviceId
+        Specifies the device ID of the volume, an example of which is: \\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
+
+        .PARAMETER Path
+        Specifies the mount point of the volume, an example of which is: C:\MyMountPoint
+
+        .INPUTS
+        This function will take inputs via pipeline as string and by property name DeviceId
+
+        .OUTPUTS
+        Microsoft.Management.Infrastructure.CimInstance#root/cimv2/Win32_Volume 
+
+        .EXAMPLE
+        PS> Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
+
+        .EXAMPLE
+        PS> Get-CimDiskImage -Path C:\MyMountPoint
+
+        .EXAMPLE
+        PS> Get-CimDiskImage
+
+    #>
+
     Param (
         [Parameter(
             ParameterSetName = 'Path',
