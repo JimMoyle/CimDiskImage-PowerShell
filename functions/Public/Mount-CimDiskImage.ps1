@@ -33,7 +33,7 @@ function Mount-CimDiskImage {
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
 
         .EXAMPLE
-        PS> C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath
+        PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 
     #>
 
@@ -103,20 +103,37 @@ function Mount-CimDiskImage {
         #Create object
         $CimFSMount = Add-Type -MemberDefinition $mountSignature -Name "CimFSMount" -Namespace Win32Functions -PassThru
 
-        #Mount the volume image flag needs to be 0
-        $mountResult = $CimFSMount::CimMountImage($folder, $fileName, 0, $guidRef)
+        #This function is only here so I can mock it during pester testing.
+        function mockmount {
+            #Mount the volume image flag needs to be 0
+            $CimFSMount::CimMountImage($folder, $fileName, 0, $guidRef)
+        }
+        $mountResult = mockmount
         If ($mountResult -ne 0) {
             Write-Error "Mounting $ImagePath to volume failed with error code $mountResult"
             return
         }
-
+        
         $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq "\\?\Volume{$guid}\" }
 
+        #This function is only here so I can mock it during pester testing.
         #Create mount point for volume to folder
-        $mountPointResult = Invoke-CimMethod -InputObject $volume -MethodName AddMountPoint -Arguments @{ Directory = $MountPath }
+        function mockmountpoint { Invoke-CimMethod -InputObject $volume -MethodName AddMountPoint -Arguments @{ Directory = $MountPath } }
+        $mountPointResult = mockmountpoint
+
+        #Error codes and messages from https://docs.microsoft.com/previous-versions/windows/desktop/vdswmi/addmountpoint-method-in-class-win32-volume 
+        switch ($mountPointResult.ReturnValue) {
+            0 { break } #Success no action
+            1 { Write-Error "Creating mount point to $MountPath failed with error 'Access Denied'"; break }
+            2 { Write-Error "Creating mount point to $MountPath failed with error 'Invalid Argument'"; break }
+            3 { Write-Error "Creating mount point to $MountPath failed with error 'Specified Directory Not Empty'"; break }
+            4 { Write-Error "Creating mount point to $MountPath failed with error 'Specified Directory Not Found'"; break }
+            5 { Write-Error "Creating mount point to $MountPath failed with error 'Volume Mount Points Not Supported'"; break }
+            Default { Write-Error "Creating mount point to $MountPath failed with unknown error. Consult https://docs.microsoft.com/previous-versions/windows/desktop/vdswmi/addmountpoint-method-in-class-win32-volume for documentation" }
+        }
+
         If ( $mountPointResult.ReturnValue -ne 0) {
-            Write-Error "Creating mount point to $MountPath failed with error code $mountResult"
-            #TODO Insert Dismount here
+            $volume.DeviceID | Dismount-CimDiskImage
             return
         }
 
@@ -128,12 +145,11 @@ function Mount-CimDiskImage {
         }
 
         #This should be all you need to find it again
-        #Maybe casting guid to type uneccessary, but it might help with future pipelines
         $out = [PSCustomObject]@{
             DeviceId   = $volume.DeviceID
             FileSystem = $volume.FileSystem
             Path       = $MountPath
-            Guid       = [guid]$guid
+            Guid       = $guid
         }
 
         Write-Output $out
