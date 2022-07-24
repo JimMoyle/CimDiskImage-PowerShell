@@ -62,7 +62,7 @@ function Dismount-CimDiskImage {
 
             $removeMountPointResult = $mountPointRemove::DeleteVolumeMountPoint($volume.Name)
             #Should return True/False
-            
+
             if (-not ($removeMountPointResult)) {
                 Write-Error "Could not remove mount point to $($volume.Name)"
                 return
@@ -70,15 +70,17 @@ function Dismount-CimDiskImage {
 
         }
 
-        #Use CIM(WMI) to dismount volume after the mount point is removed.
-        $disMountVolumeResult = Invoke-CimMethod -InputObject $volume -MethodName DisMount -Arguments @{ Force = $true }
+        #Use CIM (WMI) to dismount volume after the mount point is removed.
+        #Function only present for mocking reasons in Pester
+        function mockdismount { Invoke-CimMethod -InputObject $volume -MethodName DisMount -Arguments @{ Force = $true } }
+        $disMountVolumeResult = mockdismount
         If ($disMountVolumeResult.ReturnValue -ne 0) {
             Write-Error "Could not DisMount volume $($volume.DeviceId)"
             return
         }
 
         Write-Verbose "Volume $DeviceId Removed"
-        
+
     } # process
     end {} # end
 }  #function Dismount-CimDiskImage
