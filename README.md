@@ -1,2 +1,2 @@
 # CimDiskImage-PowerShell
-PowerShell module to mount dismount and discover cimfs disk images
+PowerShell module to Mount, Dismount and discover cimfs disk images
