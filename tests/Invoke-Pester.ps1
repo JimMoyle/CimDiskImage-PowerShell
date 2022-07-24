@@ -1,1 +1,1 @@
-Invoke-Pester -Output Detailed #-TagFilter 'Now'
+Invoke-Pester -Output Detailed #-Path D:\PoShCode\GitHub\CimDiskImage-PowerShell\tests\Public\Dismount-CimDiskImage.Tests.ps1 -TagFilter 'Now'

@@ -30,7 +30,7 @@ Describe -Name 'Mount-CimDiskImage' {
                 }
             }
         }
-        Mock -CommandName Get-CimInstance -MockWith {          
+        Mock -CommandName Get-CimInstance -MockWith {
             [PSCustomObject]@{
                 DeviceId   = $deviceId
                 FileSystem = 'cimfs'
@@ -42,6 +42,7 @@ Describe -Name 'Mount-CimDiskImage' {
             }
         }
     }
+
     Context 'Input' {
         It 'Takes Parameter Input' {
             Mount-CimDiskImage -ImagePath $realFile -MountPath $realMount -ErrorAction Stop | Should -BeNullOrEmpty
@@ -72,10 +73,11 @@ Describe -Name 'Mount-CimDiskImage' {
             }
             $pipe | Mount-CimDiskImage -ErrorAction Stop | Should -BeNullOrEmpty
         }
-    
     }
+
     Context 'Logic' {
         BeforeEach {
+            [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
             $pesterVar = $null
         }
 
@@ -143,8 +145,6 @@ Describe -Name 'Mount-CimDiskImage' {
             Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
             $pesterVar[0] | Should -BeLike "*Unknown Error*"
         }
-        
-        
     }
 
     Context 'Output' {

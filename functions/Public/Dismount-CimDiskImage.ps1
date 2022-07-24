@@ -60,7 +60,9 @@ function Dismount-CimDiskImage {
 
             $mountPointRemove = Add-Type -MemberDefinition $removeMountPointSignature -Name "RemoveVolMntPnt" -Namespace Win32Functions -PassThru
 
-            $removeMountPointResult = $mountPointRemove::DeleteVolumeMountPoint($volume.Name)
+            #Function only present for mocking reasons in Pester
+            function mockremovemountpoint { $mountPointRemove::DeleteVolumeMountPoint($volume.Name) }
+            $removeMountPointResult = mockremovemountpoint
             #Should return True/False
 
             if (-not ($removeMountPointResult)) {
@@ -74,9 +76,14 @@ function Dismount-CimDiskImage {
         #Function only present for mocking reasons in Pester
         function mockdismount { Invoke-CimMethod -InputObject $volume -MethodName DisMount -Arguments @{ Force = $true } }
         $disMountVolumeResult = mockdismount
-        If ($disMountVolumeResult.ReturnValue -ne 0) {
-            Write-Error "Could not DisMount volume $($volume.DeviceId)"
-            return
+
+        switch ($disMountVolumeResult.ReturnValue) {
+            0 { break } #Success no action
+            1 { Write-Error "Dismounting volume $($volume.DeviceId) failed with error 'Access Denied'"; break }
+            2 { Write-Error "Dismounting volume $($volume.DeviceId) failed with error 'Volume Has Mount Points'"; break }
+            3 { Write-Error "Dismounting volume $($volume.DeviceId) failed with error 'Volume Does Not Support The No-Autoremount State'"; break }
+            4 { Write-Error "Dismounting volume $($volume.DeviceId) failed with error 'Force Option Required'"; break }
+            Default { Write-Error "Dismounting volume $($volume.DeviceId) failed with unknown error. Consult https://docs.microsoft.com/previous-versions/windows/desktop/vdswmi/dismount-method-in-class-win32-volume for documentation" }
         }
 
         Write-Verbose "Volume $DeviceId Removed"
