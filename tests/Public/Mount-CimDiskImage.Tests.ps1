@@ -184,6 +184,5 @@ Describe -Name 'Mount-CimDiskImage' {
             }
             $pipe | Mount-CimDiskImage -ErrorAction Stop | Select-Object -ExpandProperty Guid | Should -Be $guid
         }
-
     }
 }
