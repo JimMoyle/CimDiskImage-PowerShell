@@ -18,7 +18,7 @@ function Get-CimDiskImage {
         This function will take inputs via pipeline as string and by property name DeviceId
 
         .OUTPUTS
-        Microsoft.Management.Infrastructure.CimInstance#root/cimv2/Win32_Volume 
+        Microsoft.Management.Infrastructure.CimInstance#root/cimv2/Win32_Volume
 
         .EXAMPLE
         PS> Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
@@ -43,8 +43,7 @@ function Get-CimDiskImage {
 
         [Parameter(
             ParameterSetName = 'DeviceId',
-            ValuefromPipelineByPropertyName = $true,
-            ValuefromPipeline = $true
+            ValuefromPipelineByPropertyName = $true
         )]
         [System.String]$DeviceId
     )
@@ -71,7 +70,7 @@ function Get-CimDiskImage {
             Default {
                 Write-Output $volume
             }
-        }   
+        }
     } # process
     end {} # end
 }  #function Get-CimDiskImage
