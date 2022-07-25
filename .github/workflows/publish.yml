@@ -6,9 +6,9 @@ jobs:
       name: Publish
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v1
+        - uses: actions/checkout@v3
         - name: Publish
           env:
             APIKEY: ${{ secrets.CIMDISKIMAGE_APIKEY }}
-          run: .\build\publish.ps1
+          run: .\build\Publish.ps1
           shell: pwsh
