@@ -39,6 +39,14 @@ Describe 'Dismount-CimDiskImage' {
             }
             $pipe | Dismount-CimDiskImage -ErrorAction Stop | Should -BeNullOrEmpty
         }
+        It 'Takes Multiple Parameter Input' {
+            $pesterVar = $null
+            $guid2 = '4c7eb921-c6ee-4b4a-97e6-77e4d714eaa6'
+            $deviceId2 = "\\?\Volume{$guid2}\"
+            $multiple = @($deviceId, $deviceId2)
+            Dismount-CimDiskImage -DeviceId  $multiple -ErrorVariable pesterVar -ErrorAction SilentlyContinue 
+            $PesterVar | Should -Be "Cound not find cimfs $deviceId2 on this computer"
+        }
     }
 
     Context 'Logic' {
