@@ -1,5 +1,5 @@
 $buildFolder = '.\build'
-$releaseFolder = '.\Release'
+$releaseFolder = '.\CimDiskImage'
 
 #Get public and private function definition files.
 
