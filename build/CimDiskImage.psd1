@@ -12,7 +12,7 @@
 RootModule = 'CimDiskImage.psm1'
 
 # Version number of this module.
-ModuleVersion = '2207.3'
+ModuleVersion = '2207.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -99,7 +99,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'CimFs','Cim','Disk Image','App Attach','AVD','Azure Virtual Desktop'
+        Tags = 'CimFs','Cim','DiskImage','AppAttach','AVD','AzureVirtualDesktop'
 
         # A URL to the license for this module.
         LicenseUri = 'https://raw.githubusercontent.com/JimMoyle/CimDiskImage-PowerShell/main/LICENSE?token=GHSAT0AAAAAABWBT4ZE7VEGHRFQWK6PHC3AYW2X35A'
