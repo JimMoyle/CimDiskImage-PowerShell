@@ -7,10 +7,10 @@ $fileName = (Get-ChildItem ($buildFolder + '\*.psm1')).Name
 $manifestFileInfo = Get-ChildItem ($buildFolder + '\*.psd1')
 $manifest = $manifestFileInfo.Name
 
-$defaultVersion = (Get-Date -Format yyMM) + '.1'
-if ([version](Test-ModuleManifest -Path $manifestFileInfo.FullName).Version -le [version]$defaultVersion){
-    $split = $defaultVersion.Split('.')
-    $currentVersion = $split[0] + '.' + ([int]$split[1] + 1)
+$defaultVersion = [version]::New((Get-Date -Format yyMM),1)
+$currentVersion = [version](Test-ModuleManifest -Path $manifestFileInfo.FullName).Version
+if ($defaultVersion -le $currentVersion){
+    $currentVersion = [version]::New($currentVersion.Major,($currentVersion.Minor + 1))
 }
 else{
     $currentVersion = $defaultVersion
@@ -41,6 +41,6 @@ Foreach ($import in @($Public + $Private)) {
 }
 Add-Content -Value '' -Path $releaseFile
 
-$copyResult = Copy-Item (Join-Path $buildFolder $manifest) (Join-Path $releaseFolder $manifest) -Force -PassThru
+$copyResult = Copy-Item $manifestFileInfo.FullName (Join-Path $releaseFolder $manifest) -Force -PassThru
 
 Update-ModuleManifest -Path $copyResult.FullName -FunctionsToExport $Public.Basename
