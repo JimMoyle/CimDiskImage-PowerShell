@@ -1,6 +1,4 @@
 function Mount-CimDiskImage {
-    [CmdletBinding()]
-
     <#
         .SYNOPSIS
         Mounts a cimfs disk image to your system.
@@ -25,17 +23,15 @@ function Mount-CimDiskImage {
 
         .EXAMPLE
         PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
-
         .EXAMPLE
         PS> Mount-CimDiskImage C:\MyCimFile.cim c:\MyMountPath
-
         .EXAMPLE
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
-
         .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 
     #>
+    [CmdletBinding()]
 
     Param (
         [Parameter(

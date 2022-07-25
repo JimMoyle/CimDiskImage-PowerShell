@@ -1,6 +1,4 @@
 function Get-CimDiskImage {
-    [CmdletBinding(DefaultParameterSetName = 'DeviceId')]
-
     <#
         .SYNOPSIS
         Gets information about a mounted cimfs disk image on your system.
@@ -22,14 +20,13 @@ function Get-CimDiskImage {
 
         .EXAMPLE
         PS> Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
-
         .EXAMPLE
         PS> Get-CimDiskImage -Path C:\MyMountPoint
-
         .EXAMPLE
         PS> Get-CimDiskImage
 
     #>
+    [CmdletBinding(DefaultParameterSetName = 'DeviceId')]
 
     Param (
         [Parameter(

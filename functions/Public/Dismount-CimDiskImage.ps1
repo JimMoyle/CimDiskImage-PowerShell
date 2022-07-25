@@ -1,6 +1,4 @@
 function Dismount-CimDiskImage {
-    [CmdletBinding()]
-
     <#
         .SYNOPSIS
         Dismounts a cimfs disk image from your system.
@@ -19,17 +17,15 @@ function Dismount-CimDiskImage {
 
         .EXAMPLE
         PS> Dismount-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
-
         .EXAMPLE
         PS> Dismount-CimDiskImage -DeviceId @('\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862e}\', '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\')
-
         .EXAMPLE
         PS> Get-CimDiskImage C:\MyMountPoint | Dismount-CimDiskImage
-
         .EXAMPLE
         PS> Get-CimInstance -ClassName win32_volume | Where-Object { $_.FileSystem -eq 'cimfs' } | Dismount-CimDiskImage
 
     #>
+    [CmdletBinding()]
 
     Param (
         [Parameter(
