@@ -12,7 +12,7 @@
 RootModule = 'CimDiskImage.psm1'
 
 # Version number of this module.
-ModuleVersion = '2207.2'
+ModuleVersion = '2207.3'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -30,7 +30,11 @@ CompanyName = 'Jim Moyle'
 Copyright = '(c) Jim Moyle. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell module to mount dismount and discover cimfs disk images'
+Description = 'PowerShell module to Mount, Dismount and discover(Get) CimFS disk images.
+
+Cim files are read only disk images. This module uses the Windows CimFS driver to mount and ummount these Cim image files.
+
+Mounting a Cim file to a drive letter is not currently supported.  The Cim disk image must be mounted to an existing empty folder.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
