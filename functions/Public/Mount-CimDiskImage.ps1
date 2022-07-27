@@ -45,8 +45,13 @@ function Mount-CimDiskImage {
 
         [Parameter(
             Position = 1,
-            ValuefromPipelineByPropertyName = $true,
-            Mandatory = $true
+            ValuefromPipelineByPropertyName = $true
+        )]
+        [System.String]$DriveLetter,
+
+        [Parameter(
+            Position = 1,
+            ValuefromPipelineByPropertyName = $true
         )]
         [System.String]$MountPath,
 
@@ -69,10 +74,17 @@ function Mount-CimDiskImage {
             return
         }
 
-        #Is the mounting folder there?  Maybe add force param to create folder.
-        If (-not (Test-Path $MountPath)) {
-            Write-Error "$MountPath does not exist"
-            return
+        if (-not ($driveLetter)) {
+            #TODO parameterset
+
+            #Is the mounting folder there?  Maybe add force param to create folder.
+            If (-not (Test-Path $MountPath)) {
+                Write-Error "$MountPath does not exist"
+                return
+            }
+        }
+        else {
+            $Mountpath = $driveletter
         }
 
         #Let's get the full file information, we'll need it later
@@ -87,6 +99,8 @@ function Mount-CimDiskImage {
         #Grab some file information in named variables
         $fileName = $fileInfo.Name
         $folder = $fileInfo.Directory.FullName
+
+        $MountPath = $MountPath.TrimEnd('\') + '\'
 
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
         $guid = (New-Guid).Guid
@@ -120,10 +134,12 @@ function Mount-CimDiskImage {
 
         $mpResult = $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID)
 
-        If ($mpResult -ne 0) {
+        If (-not ($mpResult)) {
             Write-Error "Todo: ErrorCode"
             return
         }
+
+        <#
 
         #This function is only here so I can mock it during pester testing.
         #Create mount point for volume to folder
@@ -145,6 +161,7 @@ function Mount-CimDiskImage {
             $volume.DeviceID | Dismount-CimDiskImage
             return
         }
+        #>
 
         Write-Verbose "Mounted $ImagePath to $MountPath"
 
