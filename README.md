@@ -9,3 +9,5 @@ Cim files are read only disk images. You can read more about [CimFS](https://doc
 This module uses the CimFS driver to mount and ummount the Cim image files.
 
 Mounting a Cim file to a drive letter is not currently supported.  The Cim disk image must be mounted to an existing empty folder.
+
+https://stackoverflow.com/questions/31908564/easy-way-to-add-copy-to-clipboard-to-github-markdown

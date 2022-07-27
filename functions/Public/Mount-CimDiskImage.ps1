@@ -44,14 +44,18 @@ function Mount-CimDiskImage {
         [System.String]$ImagePath,
 
         [Parameter(
+            ParameterSetName = 'ByLetter',
             Position = 1,
-            ValuefromPipelineByPropertyName = $true
+            ValuefromPipelineByPropertyName = $true,
+            Mandatory = $true
         )]
         [System.String]$DriveLetter,
 
         [Parameter(
+            ParameterSetName = 'ByPath',
             Position = 1,
-            ValuefromPipelineByPropertyName = $true
+            ValuefromPipelineByPropertyName = $true,
+            Mandatory = $true
         )]
         [System.String]$MountPath,
 
@@ -74,17 +78,25 @@ function Mount-CimDiskImage {
             return
         }
 
-        if (-not ($driveLetter)) {
-            #TODO parameterset
-
-            #Is the mounting folder there?  Maybe add force param to create folder.
-            If (-not (Test-Path $MountPath)) {
-                Write-Error "$MountPath does not exist"
-                return
+        switch ($PSCmdlet.ParameterSetName) {
+            ByLetter {
+                if ($DriveLetter -notmatch "^\w\:\\?$") {
+                    Write-Error "$DriveLetter does not seem to be a drive letter. Example X: or X:\"
+                    return
+                }
+                else {
+                    $MountPath = $DriveLetter
+                }
+                break
             }
-        }
-        else {
-            $Mountpath = $driveletter
+            ByPath {
+                If (-not (Test-Path $MountPath)) {
+                    Write-Error "$MountPath does not exist"
+                    return
+                }
+                break
+            }
+            Default {}
         }
 
         #Let's get the full file information, we'll need it later
@@ -100,6 +112,7 @@ function Mount-CimDiskImage {
         $fileName = $fileInfo.Name
         $folder = $fileInfo.Directory.FullName
 
+        # Make sure the path ends with a single \ as the SetVolumeMountPoint api requires this
         $MountPath = $MountPath.TrimEnd('\') + '\'
 
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
@@ -135,7 +148,8 @@ function Mount-CimDiskImage {
         $mpResult = $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID)
 
         If (-not ($mpResult)) {
-            Write-Error "Todo: ErrorCode"
+            Write-Error "Mounting $($volume.DeviceId) to $mountPath failed"
+            $volume.DeviceID | Dismount-CimDiskImage
             return
         }
 
