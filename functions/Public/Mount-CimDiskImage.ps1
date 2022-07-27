@@ -8,7 +8,7 @@ function Mount-CimDiskImage {
 
         .PARAMETER ImagePath
         Specifies the location of the cim file to be mounted.
-        
+
         .PARAMETER MountPath
         Specifies the local folder to which the cim file will be mounted.  This folder needs to exist prior to attempting to mount a cim file to it.
 
@@ -87,11 +87,11 @@ function Mount-CimDiskImage {
         #Grab some file information in named variables
         $fileName = $fileInfo.Name
         $folder = $fileInfo.Directory.FullName
-        
+
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
         $guid = (New-Guid).Guid
         [ref]$guidRef = $guid
-        
+
         #Get the method from the Cimfs.dll (don't change formatting)
         $mountSignature = @"
 [DllImport( "cimfs.dll", CharSet = CharSet.Unicode )] public static extern long CimMountImage(String imageContainingPath, String imageName, IntPtr mountImageFlags, ref Guid volumeId);
@@ -109,15 +109,28 @@ function Mount-CimDiskImage {
             Write-Error "Mounting $ImagePath to volume failed with error code $mountResult"
             return
         }
-        
+
         $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq "\\?\Volume{$guid}\" }
+
+        $mountPointSignature = @"
+[DllImport("kernel32.dll")] public static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);
+"@
+
+        $mountPoint = Add-Type -MemberDefinition $mountPointSignature -Name "CimMountPoint" -Namespace Win32Functions -PassThru
+
+        $mpResult = $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID)
+
+        If ($mpResult -ne 0) {
+            Write-Error "Todo: ErrorCode"
+            return
+        }
 
         #This function is only here so I can mock it during pester testing.
         #Create mount point for volume to folder
         function mockmountpoint { Invoke-CimMethod -InputObject $volume -MethodName AddMountPoint -Arguments @{ Directory = $MountPath } }
         $mountPointResult = mockmountpoint
 
-        #Error codes and messages from https://docs.microsoft.com/previous-versions/windows/desktop/vdswmi/addmountpoint-method-in-class-win32-volume 
+        #Error codes and messages from https://docs.microsoft.com/previous-versions/windows/desktop/vdswmi/addmountpoint-method-in-class-win32-volume
         switch ($mountPointResult.ReturnValue) {
             0 { break } #Success no action
             1 { Write-Error "Creating mount point to $MountPath failed with error 'Access Denied'"; break }
@@ -149,7 +162,7 @@ function Mount-CimDiskImage {
         }
 
         Write-Output $out
-        
+
     } # process
     end {} # end
 }  #function Mount-CimDiskImage
