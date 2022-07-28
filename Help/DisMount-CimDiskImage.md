@@ -11,7 +11,7 @@ Dismount-CimDiskImage
 ```
 
 ## Description
-When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.
+When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no pount point.
 
 ## Examples
 
@@ -48,7 +48,7 @@ Dismounts all Cimfs volumes
 
 ## Parameters
 
-#### -DeviceId
+### -DeviceId
 
 Specifies the device ID of the volume, an example of which is: \\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
 
@@ -60,9 +60,3 @@ Specifies the device ID of the volume, an example of which is: \\?\Volume{d34288
 | Default Value: | None |
 | Accept pipeline input: | True |
 | Accept wildcard characters: | False |
-
-## Inputs
-
-### CimInstance
-
-You can pipe an win32_volume object to the DeviceId parameter.
