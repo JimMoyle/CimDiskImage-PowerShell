@@ -17,12 +17,19 @@ function Dismount-CimDiskImage {
 
         .EXAMPLE
         PS> Dismount-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
+        Dismounts a volume by DeviceId
         .EXAMPLE
         PS> Dismount-CimDiskImage -DeviceId @('\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862e}\', '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\')
+        Dismounts a list of multiple volumes by DeviceId
         .EXAMPLE
         PS> Get-CimDiskImage C:\MyMountPoint | Dismount-CimDiskImage
+        Dismounts a volume by path
+        .EXAMPLE
+        PS> Get-CimDiskImage | Dismount-CimDiskImage
+        Dismounts all Cimfs volumes
         .EXAMPLE
         PS> Get-CimInstance -ClassName win32_volume | Where-Object { $_.FileSystem -eq 'cimfs' } | Dismount-CimDiskImage
+        Dismounts all Cimfs volumes
 
     #>
     [CmdletBinding()]
@@ -64,14 +71,14 @@ function Dismount-CimDiskImage {
 
                 #Function only present for mocking reasons in Pester
                 function mockremovemountpoint { $mountPointRemove::DeleteVolumeMountPoint($volume.Name) }
-                $removeMountPointResult = mockremovemountpoint
+                $removeMountPointResult = mockremovemountpoint; $remMntPntErr = [ComponentModel.Win32Exception][Runtime.InteropServices.Marshal]::GetLastWin32Error()
                 #Should return True/False
 
                 if (-not ($removeMountPointResult)) {
-                    Write-Error "Could not remove mount point to $($volume.Name)"
+                    $remMntPntErrStr = "Could not remove mount point to {0} Error:'{1}' ErrorCode:{2}" -f $volume.Name, $remMntPntErr.Message, $remMntPntErr.NativeErrorCode
+                    Write-Error $remMntPntErrStr
                     return
                 }
-
             }
 
             #Use CIM (WMI) to dismount volume after the mount point is removed.
