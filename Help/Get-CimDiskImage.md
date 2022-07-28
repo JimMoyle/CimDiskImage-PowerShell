@@ -76,7 +76,7 @@ Specifies the mount point of the volume, an example of which is: C:\MyMountPoint
 
 ### -DeviceId
 
-Specifies the device ID of the volume, an example of which is: \\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
+Specifies the device ID of the volume, an example of which is: \\\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
 
 
 |  | |
