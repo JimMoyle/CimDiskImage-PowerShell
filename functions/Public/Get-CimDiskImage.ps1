@@ -1,7 +1,7 @@
 function Get-CimDiskImage {
     <#
         .SYNOPSIS
-        Gets information about a mounted cimfs disk image on your system.
+        Gets information about mounted cimfs disk image(s) on your system.
 
         .DESCRIPTION
         When the volume DeviceId or Mount Point is supplied information about that disk will be returned, if no parameters are supplied all cimfs disks will be returned.
