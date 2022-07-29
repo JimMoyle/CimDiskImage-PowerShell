@@ -9,8 +9,11 @@ function Mount-CimDiskImage {
         .PARAMETER ImagePath
         Specifies the location of the cim file to be mounted.
 
+        .PARAMETER DriveLetter
+        Specifies the Drive letter which the cim file should be mounted to.  It can be in the format 'X:' or 'X:\'
+
         .PARAMETER MountPath
-        Specifies the local folder to which the cim file will be mounted.  This folder needs to exist prior to attempting to mount a cim file to it.
+        Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty  prior to attempting to mount a cim file to it.
 
         .PARAMETER PassThru
         Will output details of the mount operation to the pipeline.  Otherwise there will be no output

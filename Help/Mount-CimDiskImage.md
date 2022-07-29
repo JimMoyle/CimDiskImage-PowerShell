@@ -50,40 +50,83 @@ Mounts the Cim file to a local directory
 ### EXAMPLE 4:
 
 ```
-Get-CimDiskImage -Path X:
+Mount-CimDiskImage -Path X:
 ```
-Returns the details for the cimfs volume with the spcified Drive
+
+Mounts the cimfs volume to the specified Drive
 
 ### EXAMPLE 5:
 
 ```
 Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: | Get-CimDiskImage
 ```
+
 Returns the details for the cimfs volume which has just been mounted
+
+### EXAMPLE 6:
+
+```
+Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
+```
+
+Mounts the Cim file to a local directory and outputs the results
+
+### EXAMPLE 7:
+
+```
+'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X:
+```
+Mounts the Cim file to the specified drive and outputs the results
 
 ## Parameters
 
-### -Path
+### -ImagePath
 
-Specifies the mount point of the volume, an example of which is: C:\MyMountPoint or a drive like X:
+Specifies the location of the cim file to be mounted.
 
 |  | |
 |---|---|
 | Type:    | String |
-| Aliases: | Fullname, Name |
+| Aliases: | Fullname |
 | Position: | 0 |
 | Default Value: | None |
 | Accept pipeline input: | True |
 | Accept wildcard characters: | False |
 
-### -DeviceId
+### -DriveLetter
 
-Specifies the device ID of the volume, an example of which is: \\\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
+Specifies the Drive letter which the cim file should be mounted to.  It can be in the format 'X:' or 'X:\'
 
 
 |  | |
 |---|---|
 | Type:    | String |
+| Position: | Named |
+| Default Value: | None |
+| Accept pipeline input: | True |
+| Accept wildcard characters: | False |
+
+### -MountPath
+
+Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a cim file to it.
+
+
+|  | |
+|---|---|
+| Type:    | String |
+| Position: | Named |
+| Default Value: | None |
+| Accept pipeline input: | True |
+| Accept wildcard characters: | False |
+
+### -PassThru
+
+Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a cim file to it.
+
+
+|  | |
+|---|---|
+| Type:    | SwitchParameter |
 | Position: | Named |
 | Default Value: | None |
 | Accept pipeline input: | True |
