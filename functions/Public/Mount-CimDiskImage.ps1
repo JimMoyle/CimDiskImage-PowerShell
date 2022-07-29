@@ -4,7 +4,7 @@ function Mount-CimDiskImage {
         Mounts a cimfs disk image to your system.
 
         .DESCRIPTION
-        This will mount a cim file to a directory of your choosing allowing you to browse the contents, mounting to a drive letter is not supported.  Remember to use the -Passthru Parameter to get output
+        This will mount a cim file to a drive letter or directory of your choosing, allowing you to browse the contents. Remember to use the -Passthru Parameter to get output
 
         .PARAMETER ImagePath
         Specifies the location of the cim file to be mounted.
@@ -23,8 +23,10 @@ function Mount-CimDiskImage {
 
         .EXAMPLE
         PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
+        Mounts the Cim file to a local directory
         .EXAMPLE
-        PS> Mount-CimDiskImage C:\MyCimFile.cim c:\MyMountPath
+        PS> Mount-CimDiskImage C:\MyCimFile.cim C:\MyMountPath
+        Mounts the Cim file to a local directory
         .EXAMPLE
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
         .EXAMPLE
@@ -53,7 +55,6 @@ function Mount-CimDiskImage {
 
         [Parameter(
             ParameterSetName = 'ByPath',
-            Position = 1,
             ValuefromPipelineByPropertyName = $true,
             Mandatory = $true
         )]
