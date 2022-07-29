@@ -1,6 +1,6 @@
 # Mount-CimDiskImage        
         
-Mounts a cimfs disk image to your system. 
+Mounts a cimfs disk image file to your system. 
 
 ## Syntax
 
@@ -21,7 +21,7 @@ Mount-CimDiskImage
 ```
 
 ## Description
-This will mount a cim file to a drive letter or directory of your choosing, allowing you to browse the contents. Remember to use the -Passthru Parameter to get output
+This will mount a cim file to a drive letter or directory of your choosing, allowing you to browse the contents. Remember to use the -PassThru Parameter to get output
 
 ## Examples
 
