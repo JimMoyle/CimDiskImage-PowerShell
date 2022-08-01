@@ -26,12 +26,13 @@ function Mount-CimDiskImage {
 
         .EXAMPLE
         PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
-        Mounts the Cim file to a local directory
+        Mounts the Cim file to a local directory and sends the result to the pipeline
         .EXAMPLE
         PS> Mount-CimDiskImage C:\MyCimFile.cim C:\MyMountPath
         Mounts the Cim file to a local directory
         .EXAMPLE
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
+        Mounts the Cim file to a local directory and sends the result to the pipeline
         .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 

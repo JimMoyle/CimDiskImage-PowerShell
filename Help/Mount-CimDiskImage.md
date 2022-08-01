@@ -30,7 +30,7 @@ This will mount a cim file to a drive letter or directory of your choosing, allo
 ```
 Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
 ```
-Mounts the Cim file to a local directory
+Mounts the Cim file to a local directory and sends the result to the pipeline
 
 ### EXAMPLE 2:
 
@@ -69,14 +69,14 @@ Returns the details for the cimfs volume which has just been mounted
 Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
 ```
 
-Mounts the Cim file to a local directory and outputs the results
+Mounts the Cim file to a local directory and outputs the results to the pipeline
 
 ### EXAMPLE 7:
 
 ```
 'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X: -PassThru
 ```
-Mounts the Cim file to the specified drive and outputs the results
+Mounts the Cim file to the specified drive and outputs the results to the pipeline
 
 ## Parameters
 

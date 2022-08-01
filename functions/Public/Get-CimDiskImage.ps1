@@ -23,6 +23,7 @@ function Get-CimDiskImage {
         Returns the details for the cimfs volume with the spcified DeviceId
         .EXAMPLE
         PS> Get-CimDiskImage -Path C:\MyMountPoint
+        Returns the details for the cimfs volume with the spcified Path
         .EXAMPLE
         PS> Get-CimDiskImage
         Returns details about all cimfs volumes currntly mounted.
