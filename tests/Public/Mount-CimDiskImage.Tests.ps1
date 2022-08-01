@@ -9,7 +9,6 @@ Describe -Name 'Mount-CimDiskImage' {
 
         $realFile = 'Testdrive:\real.cim'
         $realMount = 'Testdrive:\Realmount'
-        $realDrive = 'X:'
 
         New-Item $realfile -ItemType file
         New-Item $realMount -ItemType directory
@@ -50,6 +49,7 @@ Describe -Name 'Mount-CimDiskImage' {
         }
 
         It 'Takes Positional Input' {
+            $realDrive = 'X:'
             Mount-CimDiskImage $realFile $realDrive -ErrorAction Stop | Should -BeNullOrEmpty
         }
 
