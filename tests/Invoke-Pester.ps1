@@ -1,1 +1,8 @@
-Invoke-Pester -Output Detailed #-Path D:\PoShCode\GitHub\CimDiskImage-PowerShell\tests\Public\Dismount-CimDiskImage.Tests.ps1 -TagFilter 'Now'
+$paramInvokePester = @{
+    Path = 'tests'
+    #Output = 'Detailed'
+    CodeCoverage = (Get-ChildItem functions -Recurse -File).FullName
+    #TagFilter = 'Now'
+}
+
+Invoke-Pester @paramInvokePester

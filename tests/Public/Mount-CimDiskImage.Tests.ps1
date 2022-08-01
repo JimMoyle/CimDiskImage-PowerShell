@@ -9,6 +9,7 @@ Describe -Name 'Mount-CimDiskImage' {
 
         $realFile = 'Testdrive:\real.cim'
         $realMount = 'Testdrive:\Realmount'
+        $realDrive = 'X:'
 
         New-Item $realfile -ItemType file
         New-Item $realMount -ItemType directory
@@ -49,7 +50,7 @@ Describe -Name 'Mount-CimDiskImage' {
         }
 
         It 'Takes Positional Input' {
-            Mount-CimDiskImage $realFile $realMount -ErrorAction Stop | Should -BeNullOrEmpty
+            Mount-CimDiskImage $realFile $realDrive -ErrorAction Stop | Should -BeNullOrEmpty
         }
 
         It 'Takes Pipeline Input by type' {
@@ -82,12 +83,12 @@ Describe -Name 'Mount-CimDiskImage' {
         }
 
         It 'Errors when file is not found' {
-            Mount-CimDiskImage TestDrive:\notExist.cim $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            Mount-CimDiskImage TestDrive:\notExist.cim -MountPath $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
             $pesterVar[0] | Should -BeLike "* does not exist"
         }
 
         It 'Errors when Mount Folder is not found' {
-            Mount-CimDiskImage $realFile 'Testdrive:\Notexist' -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            Mount-CimDiskImage $realFile -MountPath 'Testdrive:\Notexist' -ErrorVariable pesterVar -ErrorAction SilentlyContinue
             $pesterVar[0] | Should -BeLike "* does not exist"
         }
 
@@ -101,49 +102,14 @@ Describe -Name 'Mount-CimDiskImage' {
                     }
                 }
             }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            Mount-CimDiskImage $realFile -MountPath $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
             $pesterVar[0] | Should -BeLike "* is not a Cim file"
         }
 
         It 'Errors when Mounting Fails' {
             Mock -CommandName mockmount -MockWith { 1 }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "Mounting * to volume failed with error code *"
-        }
-
-        It 'Errors Correctly when Creating MountPoint Fails with Access Denied' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 1 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Access Denied*"
-        }
-
-        It 'Errors Correctly when Creating MountPoint Fails with Invalid Argument' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 2 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Invalid Argument*"
-        }
-
-        It 'Errors Correctly when Creating MountPoint Fails with Specified Directory Not Empty' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 3 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Specified Directory Not Empty*"
-        }
-
-        It 'Errors Correctly when Creating MountPoint Fails with Specified Directory Not Found' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 4 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Specified Directory Not Found*"
-        }
-
-        It 'Errors Correctly when Creating MountPoint Fails with Volume Mount Points Not Supported' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 5 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Volume Mount Points Not Supported*"
-        }
-        It 'Errors Correctly when Creating MountPoint Fails with Unknown Error' {
-            Mock -CommandName mockmountpoint -MockWith { [PSCustomObject]@{ ReturnValue = 6 } }
-            Mount-CimDiskImage $realFile $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "*Unknown Error*"
+            Mount-CimDiskImage $realFile -MountPath $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            $pesterVar[0] | Should -BeLike "*to volume failed with Error:*"
         }
     }
 
@@ -173,7 +139,7 @@ Describe -Name 'Mount-CimDiskImage' {
                 MountPath = $realMount
                 Passthru  = $true
             }
-            $pipe | Mount-CimDiskImage -ErrorAction Stop | Select-Object -ExpandProperty Path | Should -Be $pipe.MountPath
+            $pipe | Mount-CimDiskImage -ErrorAction Stop | Select-Object -ExpandProperty Path | Should -BeLike "$($pipe.MountPath)?"
         }
 
         It 'Outputs Guid' {
