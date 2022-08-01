@@ -74,7 +74,7 @@ Mounts the Cim file to a local directory and outputs the results
 ### EXAMPLE 7:
 
 ```
-'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X:
+'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X: -PassThru
 ```
 Mounts the Cim file to the specified drive and outputs the results
 
