@@ -50,7 +50,7 @@ Mounts the Cim file to a local directory
 ### EXAMPLE 4:
 
 ```
-Mount-CimDiskImage -Path X:
+Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X:
 ```
 
 Mounts the cimfs volume to the specified Drive
@@ -58,7 +58,7 @@ Mounts the cimfs volume to the specified Drive
 ### EXAMPLE 5:
 
 ```
-Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: | Get-CimDiskImage
+Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: -PassThru | Get-CimDiskImage
 ```
 
 Returns the details for the cimfs volume which has just been mounted
