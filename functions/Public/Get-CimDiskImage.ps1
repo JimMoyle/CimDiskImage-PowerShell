@@ -20,13 +20,13 @@ function Get-CimDiskImage {
 
         .EXAMPLE
         PS> Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
-        Returns the details for the cimfs volume with the spcified DeviceId
+        Returns the details for the cimfs volume with the specified DeviceId
         .EXAMPLE
         PS> Get-CimDiskImage -Path C:\MyMountPoint
-        Returns the details for the cimfs volume with the spcified Path
+        Returns the details for the cimfs volume with the specified Path
         .EXAMPLE
         PS> Get-CimDiskImage
-        Returns details about all cimfs volumes currntly mounted.
+        Returns details about all cimfs volumes currently mounted.
 
         .LINK
         https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Get-CimDiskImage.md

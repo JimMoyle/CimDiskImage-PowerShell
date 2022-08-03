@@ -28,14 +28,14 @@ When the volume DeviceId or Mount Point is supplied, information about that disk
 Get-CimDiskImage
 ```
 
-Returns details about all cimfs volumes currntly mounted.
+Returns details about all cimfs volumes currently mounted.
 
 ### EXAMPLE 2:
 
 ```
 Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
 ```
-Returns the details for the cimfs volume with the spcified DeviceId
+Returns the details for the cimfs volume with the sepcified DeviceId
 
 
 ### EXAMPLE 3:
@@ -43,14 +43,14 @@ Returns the details for the cimfs volume with the spcified DeviceId
 ```
 Get-CimDiskImage -Path C:\MyMountPoint
 ```
-Returns the details for the cimfs volume with the spcified MountPath
+Returns the details for the cimfs volume with the specified MountPath
 
 ### EXAMPLE 4:
 
 ```
 Get-CimDiskImage -Path X:
 ```
-Returns the details for the cimfs volume with the spcified Drive
+Returns the details for the cimfs volume with the specified Drive
 
 ### EXAMPLE 5:
 
