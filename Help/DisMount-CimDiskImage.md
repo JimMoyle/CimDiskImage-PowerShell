@@ -1,4 +1,4 @@
-# DisMount-CimDiskImage        
+# Dismount-CimDiskImage        
         
 Dismounts a cimfs disk image from your system.
 

@@ -28,6 +28,9 @@ function Get-CimDiskImage {
         PS> Get-CimDiskImage
         Returns details about all cimfs volumes currntly mounted.
 
+        .LINK
+        https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Get-CimDiskImage.md
+
     #>
     [CmdletBinding(DefaultParameterSetName = 'DeviceId')]
 

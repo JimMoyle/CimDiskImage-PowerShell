@@ -36,6 +36,9 @@ function Mount-CimDiskImage {
         .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 
+        .LINK
+        https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Mount-CimDiskImage.md
+
     #>
     [CmdletBinding()]
 
