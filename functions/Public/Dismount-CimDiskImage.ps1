@@ -30,6 +30,7 @@ function Dismount-CimDiskImage {
         .EXAMPLE
         PS> Get-CimInstance -ClassName win32_volume | Where-Object { $_.FileSystem -eq 'cimfs' } | Dismount-CimDiskImage
         Dismounts all Cimfs volumes
+        
         .LINK
         https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Dismount-CimDiskImage.md
 
