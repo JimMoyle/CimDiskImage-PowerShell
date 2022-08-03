@@ -21,3 +21,5 @@ This module uses the CimFS driver to mount and ummount the Cim image files.
 ## Recommended Content
 [CimFS](https://docs.microsoft.com/windows/win32/api/_cimfs/) (Microsoft docs)
 A CIM is a file-backed image format similar in concept to a WIM.
+
+[YouTube](https://youtu.be/nfFNODPIntE) instructional video.
