@@ -33,6 +33,9 @@ function Dismount-CimDiskImage {
         .EXAMPLE
         PS> Get-CimInstance -ClassName win32_volume | Where-Object { $_.FileSystem -eq 'cimfs' } | Dismount-CimDiskImage
         Dismounts all Cimfs volumes
+        
+        .LINK
+        https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Dismount-CimDiskImage.md
 
     #>
     [CmdletBinding()]
@@ -136,6 +139,9 @@ function Get-CimDiskImage {
         PS> Get-CimDiskImage
         Returns details about all cimfs volumes currntly mounted.
 
+        .LINK
+        https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Get-CimDiskImage.md
+
     #>
     [CmdletBinding(DefaultParameterSetName = 'DeviceId')]
 
@@ -220,6 +226,9 @@ function Mount-CimDiskImage {
         Mounts the Cim file to a local directory and sends the result to the pipeline
         .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
+
+        .LINK
+        https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Mount-CimDiskImage.md
 
     #>
     [CmdletBinding()]
