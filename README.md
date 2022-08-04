@@ -6,7 +6,7 @@ This reference provides cmdlet descriptions and syntax for all Cim Image File cm
 
 To Install the module from the PowerShell Gallery use the following command:
 
-```
+```PowerShell
 Install-Module CimDiskImage
 ```
 
@@ -19,6 +19,7 @@ This module uses the CimFS driver to mount and ummount the Cim image files.
 | [Mount-CimDiskImage](https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Mount-CimDiskImage.md)   | Mounts a cimfs disk image file to your system.       |
 
 ## Recommended Content
+
 [CimFS](https://docs.microsoft.com/windows/win32/api/_cimfs/) (Microsoft docs)
 A CIM is a file-backed image format similar in concept to a WIM.
 
