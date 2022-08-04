@@ -14,7 +14,7 @@ This module uses the CimFS driver to mount and ummount the Cim image files.
 
 | Command      | Description |
 | ----------- | ----------- |
-| [Dismount-CimDiskImage](https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/DisMount-CimDiskImage.md)      | Dismounts a cimfs disk image from your system.       |
+| [Dismount-CimDiskImage](https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Dismount-CimDiskImage.md)      | Dismounts a cimfs disk image from your system.       |
 | [Get-CimDiskImage](https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Get-CimDiskImage.md)   | Gets information about mounted cimfs disk image(s) on your system.       |
 | [Mount-CimDiskImage](https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Mount-CimDiskImage.md)   | Mounts a cimfs disk image file to your system.       |
 
