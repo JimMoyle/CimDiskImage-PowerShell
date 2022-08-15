@@ -4,7 +4,7 @@ PowerShell module to Mount, Dismount and discover CimFS disk images.
 
 This reference provides cmdlet descriptions and syntax for all Cim Image File cmdlets. It lists the cmdlets in alphabetical order based on the verb at the beginning of the cmdlet.
 
-To Install the module from the PowerShell Gallery use the following command:
+To Install the module from the [PowerShell Gallery](https://www.powershellgallery.com/packages/CimDiskImage) use the following command:
 
 ```PowerShell
 Install-Module CimDiskImage
