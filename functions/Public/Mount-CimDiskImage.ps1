@@ -78,7 +78,7 @@ function Mount-CimDiskImage {
         #requires -RunAsAdministrator
     } # begin
     process {
-        #CimFS operations need a lot of Win32 API calls to make work, I can't find a lot of native powershell to do what we need.
+        #CimFS operations need Win32 API calls to make work, I can't find a lot of native powershell to do what we need.
 
         #Is the file there
         If (-not (Test-Path $ImagePath)) {
