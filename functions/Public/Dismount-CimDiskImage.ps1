@@ -4,7 +4,7 @@ function Dismount-CimDiskImage {
         Dismounts a cimfs disk image from your system.
 
         .DESCRIPTION
-        When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no pount point.
+        When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no mount point.
 
         .PARAMETER DeviceId
         Specifies the device ID of the volume, an example of which is: \\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
@@ -59,7 +59,7 @@ function Dismount-CimDiskImage {
             #Grab details of the cimfs volume from the device ID
             $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq $Id -and $_.FileSystem -eq 'cimfs' }
             if ($null -eq $volume) {
-                Write-Error "Cound not find cimfs $Id on this computer"
+                Write-Error "Could not find cimfs $Id on this computer"
                 return
             }
 

@@ -68,6 +68,13 @@ function Mount-CimDiskImage {
         [System.String]$MountPath,
 
         [Parameter(
+            ParameterSetName = 'NoMount',
+            ValuefromPipelineByPropertyName = $true,
+            Mandatory = $true
+        )]
+        [Switch]$NoMount,
+
+        [Parameter(
             ValuefromPipelineByPropertyName = $true
         )]
         [Switch]$PassThru
@@ -121,8 +128,9 @@ function Mount-CimDiskImage {
         $folder = $fileInfo.Directory.FullName
 
         # Make sure the path ends with a single \ as the SetVolumeMountPoint api requires this
-        $MountPath = $MountPath.TrimEnd('\') + '\'
-
+        if (-not $NoMount) {
+            $MountPath = $MountPath.TrimEnd('\') + '\'
+        }
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
         $guid = (New-Guid).Guid
         [ref]$guidRef = $guid
@@ -148,25 +156,31 @@ function Mount-CimDiskImage {
 
         $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq "\\?\Volume{$guid}\" }
 
-        $mountPointSignature = @"
+        if (-not $NoMount) {
+      
+            $mountPointSignature = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);
 "@
 
-        $mountPoint = Add-Type -MemberDefinition $mountPointSignature -Name "CimMountPoint" -Namespace Win32Functions -PassThru
+            $mountPoint = Add-Type -MemberDefinition $mountPointSignature -Name "CimMountPoint" -Namespace Win32Functions -PassThru
 
-        #This function is only here so I can mock it during pester testing.
-        function mockmountpoint { $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID) }
-        $mpResult = mockmountpoint; $mpError = [ComponentModel.Win32Exception][Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            #This function is only here so I can mock it during pester testing.
+            function mockmountpoint { $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID) }
+            $mpResult = mockmountpoint; $mpError = [ComponentModel.Win32Exception][Runtime.InteropServices.Marshal]::GetLastWin32Error()
 
-        If (-not ($mpResult)) {
-            $mpErrStr = "Mounting {0} to {1} failed with Error:'{2}' ErrorCode:{3}" -f $volume.DeviceId, $mountPath , $mpError.Message, $mpError.NativeErrorCode
-            Write-Error $mpErrStr
-            $volume.DeviceID | Dismount-CimDiskImage
-            return
+            If (-not ($mpResult)) {
+                $mpErrStr = "Mounting {0} to {1} failed with Error:'{2}' ErrorCode:{3}" -f $volume.DeviceId, $mountPath , $mpError.Message, $mpError.NativeErrorCode
+                Write-Error $mpErrStr
+                $volume.DeviceID | Dismount-CimDiskImage
+                return
+            }
+
+            Write-Verbose "Mounted $ImagePath to $MountPath"
         }
-
-        Write-Verbose "Mounted $ImagePath to $MountPath"
-
+        else {
+            $MountPath = $null
+        }
+        
         #Dump out with no object if sucessful as per guidelines
         If (-not ($Passthru)) {
             return
