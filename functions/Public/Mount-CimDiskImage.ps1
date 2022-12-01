@@ -68,11 +68,11 @@ function Mount-CimDiskImage {
         [System.String]$MountPath,
 
         [Parameter(
-            ParameterSetName = 'NoMount',
+            ParameterSetName = 'NoMountPath',
             ValuefromPipelineByPropertyName = $true,
             Mandatory = $true
         )]
-        [Switch]$NoMount,
+        [Switch]$NoMountPath,
 
         [Parameter(
             ValuefromPipelineByPropertyName = $true
@@ -128,7 +128,7 @@ function Mount-CimDiskImage {
         $folder = $fileInfo.Directory.FullName
 
         # Make sure the path ends with a single \ as the SetVolumeMountPoint api requires this
-        if (-not $NoMount) {
+        if (-not $NoMountPath) {
             $MountPath = $MountPath.TrimEnd('\') + '\'
         }
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
@@ -156,7 +156,7 @@ function Mount-CimDiskImage {
 
         $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq "\\?\Volume{$guid}\" }
 
-        if (-not $NoMount) {
+        if (-not $NoMountPath) {
       
             $mountPointSignature = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);

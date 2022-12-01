@@ -92,6 +92,11 @@ Describe -Name 'Mount-CimDiskImage' {
             $pesterVar[0] | Should -BeLike "* does not exist"
         }
 
+        It 'Errors when Drive Letter is misformatted' {
+            Mount-CimDiskImage $realFile -DriveLetter 'Notletter' -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            $pesterVar[0].exception.message | Should -BeLike "*does not seem to be a drive letter*"
+        }
+
         It 'Errors when file is not cim' {
             Mock -CommandName Get-ChildItem -Mockwith {
                 [PSCustomObject]@{

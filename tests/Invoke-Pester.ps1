@@ -1,8 +1,8 @@
-$paramInvokePester = @{
-    Path = 'tests'
-    #Output = 'Detailed'
-    CodeCoverage = (Get-ChildItem functions -Recurse -File).FullName
-    #TagFilter = 'Now'
-}
+$pesterConfig = New-PesterConfiguration
+$pesterConfig.CodeCoverage.Enabled = $true
+$pesterConfig.CodeCoverage.Path = 'functions'
+$pesterConfig.CodeCoverage.RecursePaths = $true
+$pesterConfig.Run.Path = 'tests'
+$pesterConfig.Output.Verbosity = 'Detailed'
 
-Invoke-Pester @paramInvokePester
+Invoke-Pester -Configuration $pesterConfig

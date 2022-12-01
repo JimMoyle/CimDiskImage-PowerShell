@@ -45,8 +45,9 @@ Describe 'Dismount-CimDiskImage' {
             $deviceId2 = "\\?\Volume{$guid2}\"
             $multiple = @($deviceId, $deviceId2)
             Dismount-CimDiskImage -DeviceId  $multiple -ErrorVariable pesterVar -ErrorAction SilentlyContinue 
-            $PesterVar | Should -Be "Cound not find cimfs $deviceId2 on this computer"
+            $PesterVar.Exception.Message | Should -Be "Could not find cimfs $deviceId2 on this computer"
         }
+
     }
 
     Context 'Logic' {
@@ -78,7 +79,7 @@ Describe 'Dismount-CimDiskImage' {
             }
             Mock -CommandName Get-CimInstance -MockWith { $volumeNtfs }
             Dismount-CimDiskImage $deviceId -ErrorVariable pesterVar -ErrorAction SilentlyContinue
-            $pesterVar[0] | Should -BeLike "Cound not find cimfs*"
+            $PesterVar.Exception.Message | Should -BeLike "Could not find cimfs*"
         }
 
         It 'Errors when mountpoint removal fails' {
