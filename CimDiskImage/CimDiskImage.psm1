@@ -7,7 +7,7 @@ function Dismount-CimDiskImage {
         Dismounts a cimfs disk image from your system.
 
         .DESCRIPTION
-        When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no point point.
+        When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no mount point.
 
         .PARAMETER DeviceId
         Specifies the device ID of the volume, an example of which is: \\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\
@@ -62,7 +62,7 @@ function Dismount-CimDiskImage {
             #Grab details of the cimfs volume from the device ID
             $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq $Id -and $_.FileSystem -eq 'cimfs' }
             if ($null -eq $volume) {
-                Write-Error "Cound not find cimfs $Id on this computer"
+                Write-Error "Could not find cimfs $Id on this computer"
                 return
             }
 
@@ -131,13 +131,13 @@ function Get-CimDiskImage {
 
         .EXAMPLE
         PS> Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
-        Returns the details for the cimfs volume with the spcified DeviceId
+        Returns the details for the cimfs volume with the specified DeviceId
         .EXAMPLE
         PS> Get-CimDiskImage -Path C:\MyMountPoint
-        Returns the details for the cimfs volume with the spcified Path
+        Returns the details for the cimfs volume with the specified Path
         .EXAMPLE
         PS> Get-CimDiskImage
-        Returns details about all cimfs volumes currntly mounted.
+        Returns details about all cimfs volumes currently mounted.
 
         .LINK
         https://github.com/JimMoyle/CimDiskImage-PowerShell/blob/main/Help/Get-CimDiskImage.md
@@ -259,6 +259,14 @@ function Mount-CimDiskImage {
         [System.String]$MountPath,
 
         [Parameter(
+            ParameterSetName = 'NoMountPath',
+            ValuefromPipelineByPropertyName = $true,
+            Mandatory = $true
+        )]
+        [Alias('NoDriveLetter')]
+        [Switch]$NoMountPath,
+
+        [Parameter(
             ValuefromPipelineByPropertyName = $true
         )]
         [Switch]$PassThru
@@ -269,7 +277,7 @@ function Mount-CimDiskImage {
         #requires -RunAsAdministrator
     } # begin
     process {
-        #CimFS operations need a lot of Win32 API calls to make work, I can't find a lot of native powershell to do what we need.
+        #CimFS operations need Win32 API calls to make work, I can't find a lot of native powershell to do what we need.
 
         #Is the file there
         If (-not (Test-Path $ImagePath)) {
@@ -312,8 +320,9 @@ function Mount-CimDiskImage {
         $folder = $fileInfo.Directory.FullName
 
         # Make sure the path ends with a single \ as the SetVolumeMountPoint api requires this
-        $MountPath = $MountPath.TrimEnd('\') + '\'
-
+        if (-not $NoMountPath) {
+            $MountPath = $MountPath.TrimEnd('\') + '\'
+        }
         #We need to supply a random guid for the mount param (needs to be cast as a ref to interact with the API)
         $guid = (New-Guid).Guid
         [ref]$guidRef = $guid
@@ -339,25 +348,31 @@ function Mount-CimDiskImage {
 
         $volume = Get-CimInstance -ClassName win32_volume | Where-Object { $_.DeviceID -eq "\\?\Volume{$guid}\" }
 
-        $mountPointSignature = @"
+        if (-not $NoMountPath) {
+      
+            $mountPointSignature = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);
 "@
 
-        $mountPoint = Add-Type -MemberDefinition $mountPointSignature -Name "CimMountPoint" -Namespace Win32Functions -PassThru
+            $mountPoint = Add-Type -MemberDefinition $mountPointSignature -Name "CimMountPoint" -Namespace Win32Functions -PassThru
 
-        #This function is only here so I can mock it during pester testing.
-        function mockmountpoint { $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID) }
-        $mpResult = mockmountpoint; $mpError = [ComponentModel.Win32Exception][Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            #This function is only here so I can mock it during pester testing.
+            function mockmountpoint { $mountPoint::SetVolumeMountPoint($MountPath, $volume.DeviceID) }
+            $mpResult = mockmountpoint; $mpError = [ComponentModel.Win32Exception][Runtime.InteropServices.Marshal]::GetLastWin32Error()
 
-        If (-not ($mpResult)) {
-            $mpErrStr = "Mounting {0} to {1} failed with Error:'{2}' ErrorCode:{3}" -f $volume.DeviceId, $mountPath , $mpError.Message, $mpError.NativeErrorCode
-            Write-Error $mpErrStr
-            $volume.DeviceID | Dismount-CimDiskImage
-            return
+            If (-not ($mpResult)) {
+                $mpErrStr = "Mounting {0} to {1} failed with Error:'{2}' ErrorCode:{3}" -f $volume.DeviceId, $mountPath , $mpError.Message, $mpError.NativeErrorCode
+                Write-Error $mpErrStr
+                $volume.DeviceID | Dismount-CimDiskImage
+                return
+            }
+
+            Write-Verbose "Mounted $ImagePath to $MountPath"
         }
-
-        Write-Verbose "Mounted $ImagePath to $MountPath"
-
+        else {
+            $MountPath = $null
+        }
+        
         #Dump out with no object if sucessful as per guidelines
         If (-not ($Passthru)) {
             return
