@@ -26,7 +26,7 @@ This will mount a cim file to a drive letter or directory of your choosing, allo
 
 ## Examples
 
-### EXAMPLE 1:
+### EXAMPLE 1
 
 ```PowerShell
 Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passthru
@@ -34,7 +34,7 @@ Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -MountPath C:\MyMountPath -Passth
 
 Mounts the Cim file to a local directory and sends the result to the pipeline
 
-### EXAMPLE 2:
+### EXAMPLE 2
 
 ```PowerShell
 Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
@@ -42,7 +42,7 @@ Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
 
 Mounts the Cim Disk Image file to a local directory
 
-### EXAMPLE 3:
+### EXAMPLE 3
 
 ```PowerShell
 Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
@@ -50,7 +50,7 @@ Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
 
 Mounts the Cim Disk Image file to a local directory
 
-### EXAMPLE 4:
+### EXAMPLE 4
 
 ```PowerShell
 Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X:
@@ -58,7 +58,7 @@ Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X:
 
 Mounts the Cim Disk Image file to the specified Drive
 
-### EXAMPLE 5:
+### EXAMPLE 5
 
 ```PowerShell
 Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: -PassThru | Get-CimDiskImage
@@ -66,7 +66,7 @@ Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: -PassThru | Get-CimDiskImage
 
 Returns the details for the cimfs volume which has just been mounted
 
-### EXAMPLE 6:
+### EXAMPLE 6
 
 ```PowerShell
 Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
@@ -74,7 +74,7 @@ Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -P
 
 Mounts the Cim Disk Image file to a local directory and outputs the results to the pipeline
 
-### EXAMPLE 7:
+### EXAMPLE 7
 
 ```PowerShell
 'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X: -PassThru
@@ -82,7 +82,7 @@ Mounts the Cim Disk Image file to a local directory and outputs the results to t
 
 Mounts the Cim Disk Image file to the specified drive and outputs the results to the pipeline
 
-### EXAMPLE 8:
+### EXAMPLE 8
 
 ```PowerShell
 Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -NoMountPath -PassThru

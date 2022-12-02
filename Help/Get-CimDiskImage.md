@@ -22,7 +22,7 @@ When the volume DeviceId or mount point is supplied, information about that disk
 
 ## Examples
 
-### EXAMPLE 1:
+### EXAMPLE 1
 
 ```PowerShell
 Get-CimDiskImage
@@ -30,7 +30,7 @@ Get-CimDiskImage
 
 Returns details about all cimfs volumes currently mounted.
 
-### EXAMPLE 2:
+### EXAMPLE 2
 
 ```PowerShell
 Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
@@ -38,8 +38,7 @@ Get-CimDiskImage -DeviceId '\\?\Volume{d342880f-3a74-4a9a-be74-2c67e2b3862d}\'
 
 Returns the details for the cimfs volume with the sepcified DeviceId
 
-
-### EXAMPLE 3:
+### EXAMPLE 3
 
 ```PowerShell
 Get-CimDiskImage -Path C:\MyMountPoint
@@ -47,7 +46,7 @@ Get-CimDiskImage -Path C:\MyMountPoint
 
 Returns the details for the cimfs volume with the specified MountPath
 
-### EXAMPLE 4:
+### EXAMPLE 4
 
 ```PowerShell
 Get-CimDiskImage -Path X:
@@ -55,7 +54,7 @@ Get-CimDiskImage -Path X:
 
 Returns the details for the cimfs volume with the specified Drive
 
-### EXAMPLE 5:
+### EXAMPLE 5
 
 ```PowerShell
 Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X: | Get-CimDiskImage
