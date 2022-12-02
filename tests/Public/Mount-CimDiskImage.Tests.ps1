@@ -74,6 +74,24 @@ Describe -Name 'Mount-CimDiskImage' {
             }
             $pipe | Mount-CimDiskImage -ErrorAction Stop | Should -BeNullOrEmpty
         }
+
+        It 'Takes Pipeline Input by PropertyName when No Mount' {
+            $pipe = [PSCustomObject]@{
+                ImagePath   = $realFile
+                NoMountPath = $true
+                Passthru    = $false
+            }
+            $pipe | Mount-CimDiskImage -ErrorAction Stop | Should -BeNullOrEmpty
+        }
+
+        It 'Takes Pipeline Input by PropertyName Alias when No Mount' {
+            $pipe = [PSCustomObject]@{
+                FullName      = $realFile
+                NoDriveLetter = $true
+                Passthru      = $false
+            }
+            $pipe | Mount-CimDiskImage -ErrorAction Stop | Should -BeNullOrEmpty
+        }
     }
 
     Context 'Logic' {
@@ -116,6 +134,13 @@ Describe -Name 'Mount-CimDiskImage' {
             Mount-CimDiskImage $realFile -MountPath $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
             $pesterVar[0] | Should -BeLike "*to volume failed with Error:*"
         }
+
+        It 'Errors when Adding Mount Point Fails' {
+            $err = 'PesterError'
+            Mock -CommandName mockmountpoint -MockWith { Write-Error  $err }
+            Mount-CimDiskImage $realFile -MountPath $realMount -ErrorVariable pesterVar -ErrorAction SilentlyContinue
+            $pesterVar[0] | Should -BeLike $err 
+        }
     }
 
     Context 'Output' {
@@ -155,5 +180,14 @@ Describe -Name 'Mount-CimDiskImage' {
             }
             $pipe | Mount-CimDiskImage -ErrorAction Stop | Select-Object -ExpandProperty Guid | Should -Be $guid
         }
+        It 'Outputs No MountPath' {
+            $pipe = [PSCustomObject]@{
+                FullName    = $realFile
+                NoMountPath = $true
+                Passthru    = $true
+            }
+            $pipe | Mount-CimDiskImage -ErrorAction Stop | Select-Object -ExpandProperty Path | Should -BeNullOrEmpty
+        }
+        
     }
 }

@@ -72,6 +72,7 @@ function Mount-CimDiskImage {
             ValuefromPipelineByPropertyName = $true,
             Mandatory = $true
         )]
+        [Alias('NoDriveLetter')]
         [Switch]$NoMountPath,
 
         [Parameter(
