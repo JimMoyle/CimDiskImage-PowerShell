@@ -18,7 +18,7 @@ Get-CimDiskImage
 
 ## Description
 
-When the volume DeviceId or mount point is supplied, information about that disk will be returned, if no parameters are supplied all cimfs disks will be returned.
+When the volume DeviceId or mount point is supplied, information about that disk will be returned, if no parameters are supplied all cimfs volumes will be returned.
 
 ## Examples
 

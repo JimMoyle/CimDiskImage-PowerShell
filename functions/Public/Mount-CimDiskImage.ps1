@@ -15,6 +15,9 @@ function Mount-CimDiskImage {
         .PARAMETER MountPath
         Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty  prior to attempting to mount a cim file to it.
 
+        .PARAMETER NoMountPath
+        Specifies that the volume will be attached but no filesystem mountpath will be created.
+
         .PARAMETER PassThru
         Will output details of the mount operation to the pipeline.  Otherwise there will be no output
 

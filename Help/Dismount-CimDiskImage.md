@@ -12,7 +12,7 @@ Dismount-CimDiskImage
 
 ## Description
 
-When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs disk image, will only work on cim files.  It will also dismount cimfs images with no mount point.
+When the volume DeviceId is supplied as a parameter it will remove the mount point if it exists and then dismount the cimfs volume. This will only work on Cim Disk Image files.  It will also dismount cimfs volumes with no mount point.
 
 ## Examples
 

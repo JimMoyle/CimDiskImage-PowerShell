@@ -40,7 +40,7 @@ Mounts the Cim file to a local directory and sends the result to the pipeline
 Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
 ```
 
-Mounts the Cim file to a local directory
+Mounts the Cim Disk Image file to a local directory
 
 ### EXAMPLE 3:
 
@@ -48,7 +48,7 @@ Mounts the Cim file to a local directory
 Mount-CimDiskImage C:\MyCimFile.cim -MountPath C:\MyMountPath
 ```
 
-Mounts the Cim file to a local directory
+Mounts the Cim Disk Image file to a local directory
 
 ### EXAMPLE 4:
 
@@ -56,7 +56,7 @@ Mounts the Cim file to a local directory
 Mount-CimDiskImage C:\MyCimFile.cim -DriveLetter X:
 ```
 
-Mounts the cimfs volume to the specified Drive
+Mounts the Cim Disk Image file to the specified Drive
 
 ### EXAMPLE 5:
 
@@ -72,7 +72,7 @@ Returns the details for the cimfs volume which has just been mounted
 Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
 ```
 
-Mounts the Cim file to a local directory and outputs the results to the pipeline
+Mounts the Cim Disk Image file to a local directory and outputs the results to the pipeline
 
 ### EXAMPLE 7:
 
@@ -80,13 +80,21 @@ Mounts the Cim file to a local directory and outputs the results to the pipeline
 'C:\MyCimFile.cim' | Mount-CimDiskImage -DriveLetter X: -PassThru
 ```
 
-Mounts the Cim file to the specified drive and outputs the results to the pipeline
+Mounts the Cim Disk Image file to the specified drive and outputs the results to the pipeline
+
+### EXAMPLE 8:
+
+```PowerShell
+Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -NoMountPath -PassThru
+```
+
+Mounts the Cim Disk Image file to a volume without mounting to the filesystem and outputs the results to the pipeline
 
 ## Parameters
 
 ### -ImagePath
 
-Specifies the location of the cim file to be mounted.
+Specifies the location of the Cim Disk Image file to be mounted.
 
 |  | |
 |---|---|
@@ -99,7 +107,7 @@ Specifies the location of the cim file to be mounted.
 
 ### -DriveLetter
 
-Specifies the Drive letter which the cim file should be mounted to.  It can be in the format 'X:' or 'X:\'
+Specifies the Drive letter which the Cim Disk Image file should be mounted to.  It can be in the format 'X:' or 'X:\'
 
 |  | |
 |---|---|
@@ -111,7 +119,7 @@ Specifies the Drive letter which the cim file should be mounted to.  It can be i
 
 ### -MountPath
 
-Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a cim file to it.
+Specifies the local folder to which the Cim Disk Image file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a cim file to it.
 
 |  | |
 |---|---|
@@ -121,9 +129,21 @@ Specifies the local folder to which the cim file will be mounted.  This folder n
 | Accept pipeline input: | True |
 | Accept wildcard characters: | False |
 
+### -NoMountPath
+
+Specifies that the volume will be attached but no filesystem mountpath will be created.
+
+|  | |
+|---|---|
+| Type:    | SwitchParameter |
+| Position: | Named |
+| Default Value: | None |
+| Accept pipeline input: | True |
+| Accept wildcard characters: | False |
+
 ### -PassThru
 
-Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a cim file to it.
+Specifies the local folder to which the Cim Disk Image file will be mounted.  This folder needs to exist and be empty prior to attempting to mount a Cim Disk Image file to it.
 
 |  | |
 |---|---|
