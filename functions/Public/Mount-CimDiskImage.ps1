@@ -37,6 +37,9 @@ function Mount-CimDiskImage {
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
         Mounts the Cim file to a local directory and sends the result to the pipeline
         .EXAMPLE
+        PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -NoMountPath -PassThru
+        ounts the Cim Disk Image file to a volume without mounting to the filesystem and outputs the results to the pipeline
+        .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 
         .LINK
