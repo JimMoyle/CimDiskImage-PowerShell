@@ -12,7 +12,7 @@
 RootModule = 'CimDiskImage.psm1'
 
 # Version number of this module.
-ModuleVersion = '2212.1'
+ModuleVersion = '2212.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()

@@ -206,6 +206,9 @@ function Mount-CimDiskImage {
         .PARAMETER MountPath
         Specifies the local folder to which the cim file will be mounted.  This folder needs to exist and be empty  prior to attempting to mount a cim file to it.
 
+        .PARAMETER NoMountPath
+        Specifies that the volume will be attached but no filesystem mountpath will be created.
+
         .PARAMETER PassThru
         Will output details of the mount operation to the pipeline.  Otherwise there will be no output
 
@@ -224,6 +227,9 @@ function Mount-CimDiskImage {
         .EXAMPLE
         PS> Get-ChildItem C:\MyCimFile.cim | Mount-CimDiskImage -MountPath C:\MyMountPath -Passthru
         Mounts the Cim file to a local directory and sends the result to the pipeline
+        .EXAMPLE
+        PS> Mount-CimDiskImage -ImagePath C:\MyCimFile.cim -NoMountPath -PassThru
+        ounts the Cim Disk Image file to a volume without mounting to the filesystem and outputs the results to the pipeline
         .EXAMPLE
         PS> 'C:\MyCimFile.cim' | Mount-CimDiskImage -MountPath C:\MyMountPath
 
