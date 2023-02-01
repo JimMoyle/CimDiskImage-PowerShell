@@ -53,6 +53,11 @@ function Dismount-CimDiskImage {
     process {
         #CimFS operations need Win32 API calls to make work, I can't find a lot of native powershell to do what we need.
 
+        <#
+        $folderInfo = Get-Item $appPath
+        $DeviceId = '\\?\' + $folderInfo.LinkTarget.Split('\')[0] +'\'
+        #>
+
         #loop through multiple DeviceIds
         foreach ($Id in $DeviceId) {
         

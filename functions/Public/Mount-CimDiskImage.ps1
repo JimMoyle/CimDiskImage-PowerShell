@@ -56,6 +56,7 @@ function Mount-CimDiskImage {
             Mandatory = $true
         )]
         [Alias('FullName')]
+        [Alias('Path')]
         [System.String]$ImagePath,
 
         [Parameter(
